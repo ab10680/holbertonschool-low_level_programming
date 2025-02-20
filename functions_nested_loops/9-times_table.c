@@ -5,23 +5,21 @@
  */
 void times_table(void)
 {
-int i, j, product;
-for (i = 0; i <= 9; i++)
+int num, mult, prod;
+for (num = 0; num <= 9; num++)
 {
-for (j = 0; j <= 9; j++)
+_putchar('0');
+for (mult = 1; mult <= 9; mult++)
 {
-product = i * j;
-if (j > 0)
-{
-_putchar(','); /* Print comma before the number if it's not the first column */
-_putchar(' '); /* Print space after the comma */
+_putchar(',');
+_putchar(' ');
+prod = num * mult;
+if (prod <= 9)
+_putchar(' ');
+else
+_putchar((prod / 10) + '0');
+_putchar((prod % 10) + '0');
 }
-if (product < 10)
-{
-_putchar(' '); /* Print space for single-digit products */
-}
-_putchar(product + '0'); /* Print the product */
-}
-_putchar('\n'); /* New line after each row */
+_putchar('\n');
 }
 }
