@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "main.h"
 
 /**
@@ -5,7 +6,8 @@
  */
 void print_numbers(void)
 {
-for (char c = '0'; c <= '9'; c++)
+char c; /* Declare variable before the loop */
+for (c = '0'; c <= '9'; c++)
 {
 _putchar(c);
 }
