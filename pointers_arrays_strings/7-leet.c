@@ -9,8 +9,8 @@
 char *leet(char *str)
 {
 char *ptr = str;
-char *leet_chars = "43071"; /* Corresponding replacements for a, e, o, t, l */
-char letters[] = "aeotlAEOTL"; /* Letters to be replaced */
+char *leet_chars = "74031"; /* Corresponding replacements for T, A, E, O, L */
+char letters[] = "taeolTAEOL"; /* Letters to be replaced */
 int i; /* Declare 'i' here */
 while (*ptr)
 {
