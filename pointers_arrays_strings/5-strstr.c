@@ -1,13 +1,17 @@
-#include "main.h"
 #include <stddef.h>
+#include "main.h"
 
-/*
- * _strstr - Locates a substring.
- * @haystack: Pointer to the string to be searched.
- * @needle: Pointer to the substring to locate.
+/**
+ * _strstr - Finds the first occurrence of the substring `needle`
+ *            in the string `haystack`.
+ * @haystack: The string to be searched.
+ * @needle: The substring to find.
+ *
+ * This function returns a pointer to the beginning of the located
+ * substring, or NULL if the substring is not found.
  *
  * Return: A pointer to the beginning of the located substring,
- *         or NULL if the substring is not found.
+ *         or NULL if `needle` is an empty string or not found.
  */
 char *_strstr(char *haystack, char *needle)
 {
@@ -16,7 +20,7 @@ char *n;  /* Pointer for traversing needle */
 /* If needle is an empty string, return haystack */
 if (*needle == '\0')
 {
-return (haystack);  /* Add parentheses here */
+return (haystack);
 }
 while (*haystack)  /* Loop through each character in haystack */
 {
@@ -31,9 +35,9 @@ n++;
 /* If we reached the end of needle, we found a match */
 if (!*n)
 {
-return (haystack);  /* Add parentheses here */
+return (haystack);
 }
 haystack++;  /* Move to the next character in haystack */
 }
-return (NULL);  /* Add parentheses here */
+return (NULL);  /* Return NULL if no match is found */
 }
