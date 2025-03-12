@@ -1,6 +1,21 @@
 #include <stdlib.h>
-#include <string.h>
 #include "dog.h"
+
+/**
+ * _str_len - Calculates the length of a string.
+ * @str: The string to measure.
+ *
+ * Return: The length of the string.
+ */
+int _str_len(char *str)
+{
+int length = 0;
+while (str[length] != '\0')
+{
+length++;
+}
+return (length);  /* Added parentheses */
+}
 
 /**
  * new_dog - Creates a new dog.
@@ -12,26 +27,34 @@
  */
 dog_t *new_dog(char *name, float age, char *owner)
 {
-dog_t *dog = malloc(sizeof(dog_t));  /* Allocate memory for a new dog */
+dog_t *dog;
+int name_len, owner_len, i;
+dog = malloc(sizeof(dog_t));  /* Allocate memory for a new dog */
 if (dog == NULL)  /* Check if memory allocation succeeded */
-return (NULL);
+return (NULL);  /* Added parentheses */
 /* Allocate memory and copy the name */
-dog->name = malloc(strlen(name) + 1);
+name_len = _str_len(name);
+dog->name = malloc(name_len + 1);
 if (dog->name == NULL)
 {
 free(dog);  /* Free previously allocated memory */
-return (NULL);
+return (NULL);  /* Added parentheses */
 }
-strcpy(dog->name, name);  /* Copy the name */
+for (i = 0; i < name_len; i++)
+dog->name[i] = name[i];
+dog->name[name_len] = '\0';  /* Null-terminate the string */
 /* Allocate memory and copy the owner */
-dog->owner = malloc(strlen(owner) + 1);
+owner_len = _str_len(owner);
+dog->owner = malloc(owner_len + 1);
 if (dog->owner == NULL)
 {
 free(dog->name);  /* Free previously allocated name */
 free(dog);        /* Free the dog structure */
-return (NULL);
+return (NULL);  /* Added parentheses */
 }
-strcpy(dog->owner, owner);  /* Copy the owner */
+for (i = 0; i < owner_len; i++)
+dog->owner[i] = owner[i];
+dog->owner[owner_len] = '\0';  /* Null-terminate the string */
 dog->age = age;  /* Set the age */
-return (dog);  /* Return the new dog */
+return (dog);  /* Added parentheses */
 }
