@@ -9,38 +9,28 @@
  *
  * Return: Always 0 on success.
  */
-
 int main(int argc, char *argv[])
 {
 int num1, num2;
 int (*operation)(int, int);
-/* Check for the correct number of arguments */
-if (argc != 4)
+/* Check 4 correct # of arguments & ensure operator is a single char */
+if (argc != 4 || argv[2][1] != '\0')
 {
 printf("Error\n");
-exit(98);
+exit(98 + (argv[2][1] != '\0'));
+/* Exit with 98 for argument error, 99 for operator error */
 }
 /* Convert the first and third arguments to integers */
 num1 = atoi(argv[1]);
 num2 = atoi(argv[3]);
-/* Ensure the operator argument is a single character */
-if (argv[2][1] != '\0')
+operation = get_op_func(argv[2]); /* Get operation function */
+/* Check if the operation is valid and for division by zero */
+if (operation == NULL ||
+((argv[2][0] == '/' || argv[2][0] == '%') && num2 == 0))
 {
 printf("Error\n");
-exit(99);
-}
-operation = get_op_func(argv[2]); /* Get the operation function */
-/* Check if the operation is valid */
-if (operation == NULL)
-{
-printf("Error\n");
-exit(99);
-}
-/* Check for division by zero */
-if ((*argv[2] == '/' || *argv[2] == '%') && num2 == 0)
-{
-printf("Error\n");
-exit(100);
+exit(99 + ((argv[2][0] == '/') || (argv[2][0] == '%')) && (num2 == 0));
+/* Exit with 99 for invalid operator, 100 for division by zero */
 }
 /* Perform the operation and print the result */
 printf("%d\n", operation(num1, num2));
