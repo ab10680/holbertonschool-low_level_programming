@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 {
 int num1, num2;
 int (*operation)(int, int);
-/* Check 4 correct # of arguments & ensure operator is a single char */
+/* Check 4 correct number of arguments & ensure operator is single char */
 if (argc != 4 || argv[2][1] != '\0')
 {
 printf("Error\n");
@@ -23,13 +23,13 @@ exit(98 + (argv[2][1] != '\0'));
 /* Convert the first and third arguments to integers */
 num1 = atoi(argv[1]);
 num2 = atoi(argv[3]);
-operation = get_op_func(argv[2]); /* Get operation function */
-/* Check if the operation is valid and for division by zero */
+operation = get_op_func(argv[2]); /* Get the operation function */
+/* Check if the operation is valid or for division by zero */
 if (operation == NULL ||
 ((argv[2][0] == '/' || argv[2][0] == '%') && num2 == 0))
 {
 printf("Error\n");
-exit(99 + ((argv[2][0] == '/') || (argv[2][0] == '%')) && (num2 == 0));
+exit(operation == NULL ? 99 : 100);
 /* Exit with 99 for invalid operator, 100 for division by zero */
 }
 /* Perform the operation and print the result */
