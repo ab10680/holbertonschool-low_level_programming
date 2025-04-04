@@ -85,6 +85,7 @@ if (fd_to == -1)
 handle_error("Error: Can't write to %s\n", argv[2], 99);
 }
 copy_content(fd_from, fd_to, argv[1], argv[2]); /* Copy content */
+printf("[copy_files] File copied: %s\n", argv[1]); /* Output success message */
 if (close(fd_from) == -1)
 {
 handle_error("Error: Can't close fd %d\n", argv[1], 100);
