@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+#define BUFFER_SIZE 1024
+
+/**
+ * handle_error - Prints an error message and exits with a status code.
+ * @message: The error message format.
+ * @file: The file related to the error.
+ * @exit_code: The exit status code.
+ */
+void handle_error(const char *message, const char *file, int exit_code)
+{
+dprintf(STDERR_FILENO, message, file);
+exit(exit_code);
+}
+
+/**
+ * open_file - Opens a file with the given flags.
+ * @filename: The name of the file to open.
+ * @flags: The flags to use when opening the file.
+ *
+ * Return: The file descriptor if successful, otherwise exits with an error.
+ */
+int open_file(const char *filename, int flags)
+{
+int fd = open(filename, flags);
+if (fd == -1)
+{
+handle_error("Error: Can't read from file %s\n", filename, 98);
+}
+return (fd);
+}
+
+/**
+ * copy_content - Copies content from one file descriptor to another.
+ * @fd_from: The source file descriptor.
+ * @fd_to: The destination file descriptor.
+ * @src_filename: The name of the source file.
+ * @dest_filename: The name of the destination file.
+ */
+void copy_content(int fd_from, int fd_to,
+const char *src_filename, const char *dest_filename)
+{
+char buffer[BUFFER_SIZE];
+ssize_t bytesRead, bytesWritten;
+while ((bytesRead = read(fd_from, buffer, BUFFER_SIZE)) > 0)
+{
+bytesWritten = write(fd_to, buffer, bytesRead);
+if (bytesWritten != bytesRead)
+{
+handle_error("Error: Can't write to %s\n", dest_filename, 99);
+}
+}
+if (bytesRead == -1)
+{
+handle_error("Error: Can't read from file %s\n", src_filename, 98);
+}
+}
+
+/**
+ * main - Copies a file from source to destination.
+ * @argc: The number of command line arguments.
+ * @argv: The command line arguments.
+ *
+ * Return: 0 on success.
+ */
+int main(int argc, char **argv)
+{
+int fd_from; /* Declare file descriptors */
+int fd_to;   /* Declare file descriptors */
+if (argc != 3)
+{
+dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+exit(97);
+}
+fd_from = open_file(argv[1], O_RDONLY); /* Open source file */
+fd_to = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC,
+S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+if (fd_to == -1)
+{
+handle_error("Error: Can't write to %s\n", argv[2], 99);
+}
+copy_content(fd_from, fd_to, argv[1], argv[2]); /* Copy content */
+if (close(fd_from) == -1)
+{
+handle_error("Error: Can't close fd %d\n", argv[1], 100);
+}
+if (close(fd_to) == -1)
+{
+handle_error("Error: Can't close fd %d\n", argv[2], 100);
+}
+return (0); /* Return success */
+}
