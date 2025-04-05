@@ -54,12 +54,11 @@ return (fd);
  */
 void copy_content(int fd_from, int fd_to, char *src, char *dest)
 {
-ssize_t rd, wr;
+ssize_t rd, wr = -1;
 char buffer[1024];
 while ((rd = read(fd_from, buffer, 1024)) > 0)
 {
-wr = write(fd_to, buffer, rd);
-if (wr < 0 || wr != rd)
+if (wr < 0)
 {
 dprintf(STDERR_FILENO,
 "Error: Can't write to %s\n",
@@ -67,6 +66,15 @@ dest);
 close(fd_from);
 close(fd_to);
 exit(99);
+}
+if (wr != rd)
+{
+dprintf(STDERR_FILENO,
+"Error: Can't read from file %s\n",
+src);
+close(fd_from);
+close(fd_to);
+exit(98);
 }
 }
 if (rd < 0)
