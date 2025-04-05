@@ -47,15 +47,25 @@ int open_dest(const char *file)
  * @src: Source file name.
  * @dest: Destination file name.
  */
+
 void copy_content(int fd_from, int fd_to, char *src, char *dest)
 {
   char buffer[1024];
   ssize_t rd, wr;
 
-  while ((rd = read(fd_from, buffer, 1024)) > 0)
+  while ((rd = read(fd_from, buffer, 1024)) != 0)
     {
+      if (rd == -1)
+	{
+	  dprintf(STDERR_FILENO,
+		  "Error: Can't read from file %s\n", src);
+	  close_fd(fd_from);
+	  close_fd(fd_to);
+	  exit(98);
+	}
+
       wr = write(fd_to, buffer, rd);
-      if (wr != rd)
+      if (wr == -1 || wr != rd)
 	{
 	  dprintf(STDERR_FILENO,
 		  "Error: Can't write to %s\n", dest);
@@ -63,15 +73,6 @@ void copy_content(int fd_from, int fd_to, char *src, char *dest)
 	  close_fd(fd_to);
 	  exit(99);
 	}
-    }
-
-  if (rd < 0)
-    {
-      dprintf(STDERR_FILENO,
-	      "Error: Can't read from file %s\n", src);
-      close_fd(fd_from);
-      close_fd(fd_to);
-      exit(98);
     }
 }
 
