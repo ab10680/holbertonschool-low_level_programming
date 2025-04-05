@@ -1,13 +1,15 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <stddef.h> /* for size_t */
-#include <sys/types.h> /* for ssize_t */
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 
-/* Function prototype */
-ssize_t read_textfile(const char *filename, size_t letters);
-int create_file(const char *filename, char *text_content);
-int append_text_to_file(const char *filename, char *text_content);
-
+/* Function Prototypes */
+int open_source(char *file);
+int open_dest(char *file);
+void copy_content(int fd_from, int fd_to, char *src, char *dest);
+void close_fd(int fd);
 
 #endif /* MAIN_H */
